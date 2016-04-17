@@ -1,0 +1,3 @@
+@hourly                     root    twindb-apply_retention_policy >> /var/log/twindb/twindb-apply_retention_policy.log 2>&1
+@hourly                     root    twindb-volume_usage_snapshot >> /var/log/twindb/twindb-volume_usage_snapshot.log 2>&1
+*/5 * * * *                 root    twindb-schedule >> /var/log/twindb/twindb-schedule.log 2>&1

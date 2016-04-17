@@ -1,0 +1,236 @@
+%global __os_install_post %{nil}
+
+Name:           twindb-server
+Version:        @@VERSION@
+Release:        @@RELEASE@
+Summary:        TwinDB Server
+
+Group:          Applications/Databases
+Vendor:         TwinDB LLC
+License:        Commercial
+URL:            https://twindb.com
+Source:         %{name}-%{version}.tar.gz
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+BuildArch:      noarch
+BuildRequires:  coreutils >= 8.4 unzip
+%description
+TwinDB Server is a set of packages to manage MySQL backups
+
+%package common
+Summary:        TwinDB common scripts and config files
+Group:          Applications/Databases
+Requires:       httpd >= 2.2.0 php php-cli php-mysql php-process mysql bash sed cronie logrotate python-pip ntp ntpdate
+%description common
+TwinDB common PHP scripts and configuration files
+
+%package console
+Summary:        TwinDB web console 
+Group:          Applications/Databases
+Requires:       twindb-server-common unzip mod_ssl >= 2.4.6 
+%description console
+TwinDB web console
+
+%package dispatcher
+Summary:        TwinDB jobs server
+Group:          Applications/Databases
+Requires:       twindb-server-common openssh sudo
+%description dispatcher
+TwinDB jobs server is a dispatcher that commands twindb agents to performs specific jobs
+
+%package db
+Summary:        TwinDB database
+Group:          Applications/Databases
+Requires:       mysql-server >= 5.6.20 mysql >= 5.6.0 bash
+%description db
+TwinDB schema
+
+%package storage
+Summary:        TwinDB storage
+Group:          Applications/Databases
+Requires:       glibc-common coreutils shadow-utils chkconfig sudo
+Requires:       openssh-server openssh-clients 
+Requires:       bash pwgen strace
+Requires:       curl
+%description storage
+TwinDB storage configuration files
+
+%prep
+%setup -q
+
+%build
+make
+
+%install
+make DESTDIR=%{buildroot} install
+install -d %{buildroot}/etc/httpd/conf.d
+mv %{buildroot}/etc/twindb/httpd/conf.d/twindb-common.conf %{buildroot}/etc/httpd/conf.d
+mv %{buildroot}/etc/twindb/httpd/conf.d/twindb-console.conf %{buildroot}/etc/httpd/conf.d
+mv %{buildroot}/etc/twindb/httpd/conf.d/twindb-dispatcher.conf %{buildroot}/etc/httpd/conf.d
+
+%clean
+rm -rf %{buildroot}
+
+%files common
+%defattr(644, root, root, 755>)
+# needed for -api and -www
+%config(noreplace) %attr(640, root, apache)  %{_sysconfdir}/twindb/config.php
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/twindb-common.conf
+%{_datadir}/twindb/inc/dispatcher_lib.php
+%{_datadir}/twindb/inc/general_lib.php
+%{_datadir}/twindb/inc/mysql_lib.php
+%{_datadir}/twindb/inc/variables.php
+%attr(600, apache, -) %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key
+%attr(644, apache, -) %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
+%{_sysconfdir}/logrotate.d/twindb
+
+%files dispatcher
+%defattr(644, root, root, 755>)
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/twindb-dispatcher.conf
+%config(noreplace) %attr(700, apache, -) %{_sysconfdir}/twindb/gnupg
+%{_sysconfdir}/cron.d/twindb-dispatcher.cron
+%{_datadir}/twindb/dispatcher
+%attr(600, apache, -) %{_datadir}/twindb/gpg/twindb-dispatcher-gpg.key
+%attr(755, root, root) %{_bindir}/twindb-apply_retention_policy
+%attr(755, root, root) %{_bindir}/twindb-schedule
+%attr(755, root, root) %{_bindir}/twindb-volume_usage_snapshot
+
+%files console
+%defattr(644, root, root, 755>)
+%config(noreplace)  %{_sysconfdir}/httpd/conf.d/twindb-console.conf
+%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/ca-bundle-client.crt
+%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/twindb_com.crt
+%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.key/twindb_com.key
+%{_datadir}/twindb/console
+
+%files db
+%defattr(644, root, root, 755>)
+%attr(644, root, root) %{_datadir}/twindb/db/twindb-schema.sql
+%attr(600, root, root) %{_datadir}/twindb/db/twindb-data.sql
+%{_datadir}/twindb/db/updates
+%attr(755, root, root) %{_bindir}/twindb-db_upgrade
+
+%files storage
+%defattr(644, root, root, 755>)
+%{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
+%attr(755, root, root)%{_sysconfdir}/init.d/twindb-storage
+%attr(755, root, root)%{_bindir}/twindb-add_chroot_user
+%attr(755, root, root)%{_bindir}/twindb-register-storage
+%attr(755, root, root)%{_bindir}/twindb-storage-auth
+%attr(600, root, root)%{_sysconfdir}/twindb/sshd_config
+%attr(600, root, root)%{_sysconfdir}/twindb/sshd_config_5
+
+%post common
+if [ "$1" = "1" ]
+then
+    echo "========================================"
+    echo ""
+    echo "Edit %{_sysconfdir}/twindb/config.php to set MySQL credentials"
+    echo ""
+    echo "========================================"
+fi
+
+/sbin/chkconfig ntpd on
+/sbin/chkconfig ntpdate on
+
+echo "Stopping ntpd service"
+service ntpd stop
+
+echo "Restarting ntpdate"
+service ntpdate restart
+
+echo "Starting ntpd service"
+service ntpd start
+
+if test -z "`which aws`"
+then
+    pip install awscli
+else
+    pip install awscli --upgrade
+fi
+
+mkdir -p /var/log/twindb
+chown -R apache:apache /var/log/twindb
+chkconfig httpd on
+apachectl graceful
+
+%post dispatcher
+if [ "$1" = "1" ]
+then
+    gpg --homedir %{_sysconfdir}/twindb/gnupg --import \
+        < %{_datadir}/twindb/gpg/twindb-dispatcher-gpg.key
+fi
+# Generate SSH key for root if missing
+if ! test -f /root/.ssh/id_rsa
+then
+    echo "Warning: root user doesn't have an SSH key, generating one."
+    ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa
+fi
+chown -R apache:apache %{_sysconfdir}/twindb/gnupg
+apache_homedir=`grep ^apache: /etc/passwd | awk -F: '{ print $6 }'`
+mkdir -p "$apache_homedir/.ssh"
+chown -R apache:apache "$apache_homedir/.ssh"
+apachectl configtest && apachectl graceful
+
+%post console
+APACHE_HOME="`grep -w apache /etc/passwd | awk -F: '{ print $6 }'`"
+mkdir -p "$APACHE_HOME/.ssh"
+chown apache:apache "$APACHE_HOME/.ssh"
+
+apachectl configtest && apachectl graceful
+
+%post db
+echo "========================================"
+echo ""
+echo "Run twindb-db_upgrade script to install or upgrade MySQL schema"
+echo ""
+echo "========================================"
+
+%post storage
+
+# Install dispatcher key
+mkdir -p /var/twindb-sftp/root/home/.ssh/
+cp %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub /var/twindb-sftp/root/home/.ssh/authorized_keys
+chmod 700 /var/twindb-sftp/root/home/.ssh/
+chmod 600 /var/twindb-sftp/root/home/.ssh/authorized_keys
+
+if [ "$1" = "1" ]
+then
+    if test -z "`grep ^twindb: /etc/group`" ; then groupadd twindb; fi
+    mkdir -p /var/twindb-sftp
+    /sbin/chkconfig --add twindb-storage
+    /sbin/chkconfig twindb-storage on
+    /etc/init.d/twindb-storage start
+else
+    # Upgrade
+    /etc/init.d/twindb-storage restart
+fi
+
+%preun storage
+if [ "$1" = "0" ]
+then
+    # Remove last version of package
+    /sbin/chkconfig --del twindb-storage
+    /etc/init.d/twindb-storage stop
+    echo "Leaving files in /var/twindb-sftp . Delete them manually if they're not needed."
+fi
+
+
+%changelog
+* Wed Nov 27 2014 Aleksandr Kuzminsky <aleks@twindb.com> - 0.3.2-2
+- Enable httpd when installing -common and gracefully restart it
+
+* Wed Nov 27 2014 Aleksandr Kuzminsky <aleks@twindb.com> - 0.3.0
+- Adjust the new versioning scheme to be compartible with the old
+
+* Wed Nov 26 2014 Aleksandr Kuzminsky <aleks@twindb.com> - 0.0.3
+- Introducing new versioning scheme as MAJOR.MINOR.PATH
+
+* Sat Sep 6 2014 Aleksandr Kuzminsky <aleks@twindb.com> - 0.2
+- Rewritten TwinDB
+
+* Sun Dec 29 2013 Aleksandr Kuzminsky <aleksandr.kuzminsky@twindb.com> - 0.1
+- Pre-production release
+
+* Wed Sep 25 2013 Aleksandr Kuzminsky <aleksandr.kuzminsky@doppeln.com> - 0.0
+- Initial package.
+

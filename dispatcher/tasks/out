@@ -1,0 +1,566 @@
+
+2015-10-20T20:53:46+00:00: DEBUG: Debug mode is ON
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 82: get_rw_connection(): trying host 192.168.50.101
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 88: get_rw_connection(): returning read/write connection
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 15: get_ro_connection(): shuffling pool of read-only servers
+Array
+(
+    [0] => 192.168.50.102
+    [1] => 192.168.50.103
+)
+
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 20: get_ro_connection(): trying host 192.168.50.102
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 44: get_ro_connection(): 192.168.50.102 Slave_IO_Running: Yes
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 49: get_ro_connection(): 192.168.50.102 Slave_SQL_Running: Yes
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 54: get_ro_connection(): 192.168.50.102 Seconds_Behind_Master: 0
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 59: get_ro_connection(): host 192.168.50.102 is a healthy slave, will use it
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 61: get_ro_connection(): returning read-only connection
+2015-10-20T20:53:46+00:00: DEBUG: Getting clusters list
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'SELECT DISTINCT `cluster_id` FROM `server`'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'BEGIN'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'SELECT `retention_policy`.`keep_full_sets`
+              FROM `server`
+              JOIN `config` USING (`config_id`)
+              JOIN `retention_policy` USING (`retention_policy_id`)
+              WHERE `server`.`cluster_id` = 6
+              LIMIT 1'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'SELECT `backup_copy`.`backup_copy_id`
+                  FROM `backup_copy`
+                  JOIN `job` USING (`job_id`)
+                  JOIN `server` USING (`server_id`)
+                  WHERE `backup_copy`.`full_backup` = 'Y'
+                  AND `server`.`cluster_id` = 6
+                  ORDER BY `job`.`finish_actual` DESC
+                  LIMIT 1000 OFFSET 1
+                  FOR UPDATE'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: Found 1 full sets to delete
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'SELECT `backup_copy_tree`.`descendant`, `backup_copy`.`name`, `storage`.`ip`, `server`.`user_id`, `server`.`server_id` FROM `backup_copy_tree` JOIN `backup_copy` ON `backup_copy`.`backup_copy_id` = `backup_copy_tree`.`descendant` JOIN `job` USING (`job_id`) JOIN `server` USING (`server_id`) JOIN `volume` USING(`volume_id`) JOIN `storage` USING(`storage_id`) WHERE `backup_copy_tree`.`ancestor` = 1 FOR UPDATE'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T22:59:48.155756.xbstream.gpg'
+Warning: Permanently added '[192.168.50.104]:4194' (RSA) to the list of known hosts.
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 1'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 1'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 1'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"1"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:46+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:00:55.231954.xbstream.gpg'
+2015-10-20T20:53:46+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 2'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 2'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 2'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"2"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:06:05.284807.xbstream.gpg'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 3'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 3'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 3'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"3"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:11:20.290035.xbstream.gpg'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 4'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 4'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 4'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"4"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:26:05.086153.xbstream.gpg'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 5'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 5'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 5'
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"5"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:47+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:47+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:35:17.402690.xbstream.gpg'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 6'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 6'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 6'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"6"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:40:27.427771.xbstream.gpg'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 7'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 7'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 7'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"7"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:45:37.648855.xbstream.gpg'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 8'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 8'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 8'
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"8"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:48+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:48+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:50:48.218955.xbstream.gpg'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 9'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 9'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 9'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"9"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-18T23:55:59.041295.xbstream.gpg'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 10'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 10'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 10'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"10"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T02:57:29.185615.xbstream.gpg'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 36'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 36'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 36'
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"36"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:49+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:49+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:30:04.376942.xbstream.gpg'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 40'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 40'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 40'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"40"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:35:13.901141.xbstream.gpg'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 41'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 41'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 41'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"41"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:40:23.540264.xbstream.gpg'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 42'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 42'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 42'
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"42"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:50+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:50+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:45:33.156928.xbstream.gpg'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 43'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 43'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 43'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"43"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:50:42.943773.xbstream.gpg'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 44'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 44'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 44'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"44"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T03:55:52.467271.xbstream.gpg'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 45'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 45'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 45'
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"45"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:51+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:51+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T04:01:02.073144.xbstream.gpg'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 47'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 47'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 47'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"47"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T04:15:14.314119.xbstream.gpg'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 48'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 48'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 48'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"48"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T13:58:34.740682.xbstream.gpg'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 49'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 49'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 49'
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"49"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:52+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:52+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:00:48.228796.xbstream.gpg'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 50'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 50'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 50'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"50"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:05:57.584300.xbstream.gpg'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 51'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 51'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 51'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"51"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:10:06.703847.xbstream.gpg'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 52'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 52'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 52'
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"52"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:53+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:53+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:15:17.102179.xbstream.gpg'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 53'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 53'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 53'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"53"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:20:26.530840.xbstream.gpg'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 54'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 54'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 54'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"54"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:25:40.981372.xbstream.gpg'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 55'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 55'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 55'
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"55"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:54+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:54+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:30:50.271496.xbstream.gpg'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 56'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 56'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 56'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"56"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-19T14:35:59.536925.xbstream.gpg'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 57'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 57'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 57'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"57"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T14:55:16.351649.xbstream.gpg'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 83'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 83'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 83'
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"83"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:55+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:55+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:00:25.757359.xbstream.gpg'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 84'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 84'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 84'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"84"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:05:35.145878.xbstream.gpg'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 85'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 85'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 85'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"85"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:10:49.408809.xbstream.gpg'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 86'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 86'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 86'
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"86"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:56+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:56+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:15:58.508239.xbstream.gpg'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 87'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 87'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 87'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"87"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:20:07.364562.xbstream.gpg'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 88'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 88'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 88'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"88"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:25:16.499999.xbstream.gpg'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 89'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 89'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 89'
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"89"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:57+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:57+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:30:25.568852.xbstream.gpg'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 90'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 90'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 90'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"90"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:35:34.845266.xbstream.gpg'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 91'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 91'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 91'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"91"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T15:40:44.128181.xbstream.gpg'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 92'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 92'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 92'
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"92"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:58+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:58+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T17:50:28.372482.xbstream.gpg'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 93'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 93'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 93'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"93"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T19:30:09.417150.xbstream.gpg'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 107'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 107'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 107'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"107"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T19:45:21.853289.xbstream.gpg'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 109'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 109'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 109'
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"109"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:53:59+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:53:59+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T19:50:35.998860.xbstream.gpg'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 110'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 110'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 110'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"110"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T19:55:45.174192.xbstream.gpg'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 111'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 111'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 111'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"111"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:00:54.449923.xbstream.gpg'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 113'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 113'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 113'
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"113"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:00+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:00+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:15:07.149431.xbstream.gpg'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 114'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 114'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 114'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"114"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:20:16.374681.xbstream.gpg'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 115'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 115'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 115'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"115"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:25:25.516090.xbstream.gpg'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 116'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 116'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 116'
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"116"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:01+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:01+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:30:34.695538.xbstream.gpg'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 117'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 117'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 117'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"117"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:35:43.908808.xbstream.gpg'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 118'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 118'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 118'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"118"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:40:53.339899.xbstream.gpg'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 119'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 119'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 119'
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"119"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:02+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:02+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:45:02.071852.xbstream.gpg'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 120'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 120'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 120'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"120"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: Removing backup:
+ssh -oStrictHostKeyChecking=no -i '/usr/share/twindb/ssh/twindb-dispatcher-ssh.key' -p 4194 'root@192.168.50.104' rm '/var/twindb-sftp/user_id_1/home/server_id_80490d41-9f86-4930-be57-a7985d1e8822_2015-10-20T20:50:11.289992.xbstream.gpg'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `volume` JOIN `backup_copy` USING(`volume_id`) SET `volume`.`used_size` = `volume`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 121'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'UPDATE `storage` JOIN `volume` USING(`storage_id`) JOIN `backup_copy` USING(`volume_id`) SET `storage`.`used_size` = `storage`.`used_size` - `backup_copy`.`size` WHERE `backup_copy`.`backup_copy_id` = 121'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `backup_copy` WHERE `backup_copy_id` = 121'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'DELETE FROM `job` WHERE `params` LIKE '%"ancestor":"121"%' AND `type` = 'backup' AND `status` = 'Scheduled' AND `server_id` = '80490d41-9f86-4930-be57-a7985d1e8822''
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 9965302)
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 110: mysql_rw_execute(): sending query 'COMMIT'
+2015-10-20T20:54:03+00:00: DEBUG: mysql_lib.php: 134: save_binlog_coordinates(): current binlog coordinates('mysqld-bin.000001', 10011558)

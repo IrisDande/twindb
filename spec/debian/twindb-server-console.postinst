@@ -1,0 +1,13 @@
+chmod 400 /etc/twindb/httpd/conf/ssl.crt/ca-bundle-client.crt
+chmod 400 /etc/twindb/httpd/conf/ssl.crt/twindb_com.crt
+chmod 400 /etc/twindb/httpd/conf/ssl.key/twindb_com.key
+
+a2enmod rewrite ssl
+a2ensite twindb-console
+service apache2 graceful
+
+echo "================================================================================================================="
+echo ""
+echo "Edit /etc/twindb/config.php to set MySQL credentials"
+echo ""
+echo "================================================================================================================="

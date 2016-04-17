@@ -1,0 +1,30 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+ALTER TABLE `server` 
+DROP FOREIGN KEY `fk_server_user`;
+
+ALTER TABLE `server` 
+ADD COLUMN `config_id` INT(10) UNSIGNED NOT NULL AFTER `mysql_slave_sql_running`,
+ADD INDEX `fk_server_user_idx` (`config_id` ASC),
+DROP INDEX `fk_server_user_idx` ;
+
+DROP TABLE IF EXISTS `server_filter_tag_entry` ;
+
+DROP TABLE IF EXISTS `server_filter_attribute_entry` ;
+
+DROP TABLE IF EXISTS `server_filter` ;
+
+ALTER TABLE `server` 
+ADD CONSTRAINT `fk_server_user`
+  FOREIGN KEY (`config_id`)
+  REFERENCES `config` (`config_id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+INSERT INTO db_version (version) VALUES(10);
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

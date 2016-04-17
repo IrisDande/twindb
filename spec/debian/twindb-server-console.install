@@ -1,0 +1,7 @@
+etc/twindb/httpd/conf/ssl.crt/ca-bundle-client.crt etc/twindb/httpd/conf/ssl.crt
+etc/twindb/httpd/conf/ssl.crt/twindb_com.crt.crt etc/twindb/httpd/conf/ssl.crt
+etc/twindb/httpd/conf/ssl.key/twindb_com.key etc/twindb/httpd/conf/ssl.key
+etc/twindb/httpd/conf.d/twindb-console.conf etc/apache2/sites-available
+
+usr/share/twindb/console usr/share/twindb
+

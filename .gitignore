@@ -1,0 +1,13 @@
+/support/keys/twindb-dispatcher-ssh.key
+/support/keys/twindb-dispatcher-gpg.key
+/support/http/ssl.key/twindb_com.key
+.build
+server/www/workspace/build/.sass-cache
+.sass-cache
+build
+.DS_Store
+bootstrap.js
+.idea
+.vagrant
+*.bak
+spec/twindb-server.spec

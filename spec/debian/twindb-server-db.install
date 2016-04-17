@@ -1,0 +1,4 @@
+usr/share/twindb/db/twindb-schema.sql usr/share/twindb/db
+usr/share/twindb/db/twindb-data.sql usr/share/twindb/db
+usr/share/twindb/db/updates usr/share/twindb/db
+usr/bin/twindb-db_upgrade usr/bin

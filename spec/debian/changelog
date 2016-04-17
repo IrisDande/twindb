@@ -1,0 +1,372 @@
+twindb-server (0.4.2-1.UNRELEASED) UNRELEASED; urgency=low
+
+  * New version 0.4.1-1
+  * 257: Aleksandr Kuzminsky 2015-04-22 checkpoint commit
+  * 256: Aleksandr Kuzminsky 2015-04-22 checkpoint commit
+  * 255: Aleksandr Kuzminsky 2015-04-22 checkpoint commit
+  * 254: Aleksandr Kuzminsky 2015-04-11 revert apache config options
+  * 253: Aleksandr Kuzminsky 2015-04-11 Version++
+  * 252: Aleksandr Kuzminsky 2015-04-11 vagrant config for one
+    app(console+dispatcher+storage) and three mysql servers
+  * 251: Aleksandr Kuzminsky 2015-04-11 build packages in the source
+    root. style formattings
+  * 250: Aleksandr Kuzminsky 2015-04-11 Fixed Bug #1431991
+  * 249: Aleksandr Kuzminsky 2015-04-10 * Set timezone when a client
+    requests MySQL connection
+  * 248: Aleksandr Kuzminsky 2015-04-07 Implemented get_full_copy_params
+    and get_child_copy_params API calls
+  * 247: Aleksandr Kuzminsky 2015-04-05 Escape cluster_id in case it's
+    empty; Added common apache config file
+  * 246: Aleksandr Kuzminsky 2015-04-04 [merge] Implemented restore form
+  * 245: Aleksandr Kuzminsky 2015-03-22 When user opens a Jobs tab in
+    Server details it showed only jobs for the server.
+  * 244: Aleksandr Kuzminsky 2015-03-21 [merge] re-merged
+    lp:~akuzminsky/twindb/alerts
+  * 243: Aleksandr Kuzminsky 2015-03-21 cleaned up ECMA-262 warnings
+  * 242: Aleksandr Kuzminsky 2015-03-21 Fixed Bug #1431990
+  * 241: Aleksandr Kuzminsky 2015-03-21 [merge] Implemented basic
+    alerts, Backup KPI graphs
+  * 240: Aleksandr Kuzminsky 2015-03-16 [merge] Fixed Bug #1432002
+  * 239: Aleksandr Kuzminsky 2015-03-15 [merge] Fixe Bug #1431992
+  * 238: Aleksandr Kuzminsky 2015-03-09 Version 0.3.53
+  * 237: Aleksandr Kuzminsky 2015-03-09 [merge] Fixe Bug #1400875
+  * 236: Aleksandr Kuzminsky 2015-03-09 [merge] Fixed Bug #1400876
+  * 235: Aleksandr Kuzminsky 2015-03-09 Fixed Bug #1400438
+  * 234: Aleksandr Kuzminsky 2015-03-08 * removed hardcoded database
+    name; * Fixed Bug #1400441
+  * 233: Aleksandr Kuzminsky 2015-03-08 [merge] Fixed Bug #1380781
+  * 232: Aleksandr Kuzminsky 2015-03-08 [merge] Fixed Bug #1425582
+  * 231: Aleksandr Kuzminsky 2015-03-08 [merge] Fixed Bug #1425577
+  * 230: Aleksandr Kuzminsky 2015-03-08 [merge] Fixed Bug #1409165
+  * 229: Aleksandr Kuzminsky 2015-03-08 [merge] Fixed Bug #1422027
+  * 228: Aleksandr Kuzminsky 2015-03-06 [merge] Fixed Bug #1408841
+  * 227: Aleksandr Kuzminsky 2015-03-05 [merge] Fixe Bug #1425587
+  * 226: Aleksandr Kuzminsky 2015-03-05 [merge] Fixed Bug #1426993
+  * 225: Aleksandr Kuzminsky 2015-03-03 Saving binlog position broke
+    insert_id. Fixed it
+  * 224: Aleksandr Kuzminsky 2015-03-03 Version 0.3.52
+  * 223: Aleksandr Kuzminsky 2015-03-03 Handle lagged slaves
+  * 222: Aleksandr Kuzminsky 2015-03-03 [merge] Fixed Bug #1427057
+  * 221: Aleksandr Kuzminsky 2015-03-03 [merge] Fixed Bug #1427012
+  * 220: Aleksandr Kuzminsky 2015-03-02 [merge] Fixed Bug #1425586
+  * 219: Aleksandr Kuzminsky 2015-03-02 [merge] Fixe Bug #1425364
+  * 218: Aleksandr Kuzminsky 2015-02-22 [merge] Fixed Bug #1409162
+  * 217: Aleksandr Kuzminsky 2015-02-22 [merge] Fixed Bug #1414243
+  * 216: Aleksandr Kuzminsky 2015-02-22 [merge] Impletemented Blueprint
+    server-list-context-menu
+  * 215: Aleksandr Kuzminsky 2015-02-21 [merge] Implemented Blueprint
+    backups-view
+  * 214: Aleksandr Kuzminsky 2015-02-21 [merge] Implemented server-grid-
+    group-by-cluster
+  * 213: Aleksandr Kuzminsky 2015-02-21 [merge] Fixed Bug #1416873
+  * 212: Aleksandr Kuzminsky 2015-02-21 [merge] Fixed Bug #1422019
+  * 211: Aleksandr Kuzminsky 2015-02-21 [merge] Fixed Bug #1413080
+  * 210: Aleksandr Kuzminsky 2015-02-07 [merge] Fixed Bug #1413072
+  * 209: Aleksandr Kuzminsky 2015-01-23 [merge] Fixed Bug #1414208
+  * 208: Aleksandr Kuzminsky 2015-01-20 [merge] Fixed Bug #1403740
+  * 207: Aleksandr Kuzminsky 2015-01-19 Makefile can build Debian
+    package from twindb-backup
+  * 206: Ovais Tariq 2015-01-13 [merge] Merge lp:~akuzminsky/twindb/bug-
+    1410026
+  * 205: Ovais Tariq 2015-01-13 [merge] Merge lp:~akuzminsky/twindb/bug-
+    1402503 into lp:twindb
+  * 204: Ovais Tariq 2015-01-13 [merge] Merge lp:~akuzminsky/twindb/bug-
+    1409549 into lp:twindb
+  * 203: Ovais Tariq 2015-01-13 [merge] Merge lp:~akuzminsky/twindb/bug-
+    1409818 into lp:twindb
+  * 202: Aleksandr Kuzminsky 2015-01-11 * fixed Bug #1409549
+  * 201: Aleksandr Kuzminsky 2015-01-10 emergency fix of a duplicate
+    function
+  * 200: Aleksandr Kuzminsky 2015-01-10 Implemented in agent:
+  * 199: Aleksandr Kuzminsky 2015-01-10 Fixed Bug #1409368
+  * 198: Aleksandr Kuzminsky 2015-01-10 Friendlier notification in the
+    forgot password form
+  * 197: Aleksandr Kuzminsky 2015-01-10 Use more reliable HTTP_HOST,
+    which should fix Bug #1400586
+  * 196: Aleksandr Kuzminsky 2015-01-10 Fixed Bug #1401186
+  * 195: Aleksandr Kuzminsky 2015-01-09 * Added item to job-grid context
+    menu - cancel job
+  * 194: Aleksandr Kuzminsky 2015-01-09 Agent reports backup copy
+    details such as size, last lsn; Agent reports correct backup copy
+    size
+  * 193: Aleksandr Kuzminsky 2015-01-08 Fixed Bug #1408840; Fix sql
+    syntax error
+  * 192: Aleksandr Kuzminsky 2015-01-06 Color status in a job grid
+  * 191: Aleksandr Kuzminsky 2015-01-06 1. Prettier formatting of JSON
+    in log messager
+  * 190: Aleksandr Kuzminsky 2015-01-06 Install dispatcher public ssh
+    key on the dispatcher too
+  * 189: Aleksandr Kuzminsky 2015-01-06 Try older sshd options if config
+    check against sshd_config fails. In sshd version 5 there was
+    AuthorizedKeysCommandRunAs, but in sshd 6 it was renamed to
+    AuthorizedKeysCommandUser
+  * 188: Aleksandr Kuzminsky 2015-01-05 Small change that makes huge
+    impact.
+  * 187: Aleksandr Kuzminsky 2015-01-05 perl-DBD-MySQL version update;
+    build perl-DBD-MySQL for any version of MySQL (preferably 5.1)
+  * 186: Aleksandr Kuzminsky 2015-01-03 * Agent reports its granted
+    privileges
+  * 185: Aleksandr Kuzminsky 2015-01-02 unconditionally start twindb
+    agent after it was stopped (because it pkills /usr/bin/twindb)
+  * 184: Aleksandr Kuzminsky 2015-01-02 Set Failed status for all
+    abandoned jobs
+  * 183: Aleksandr Kuzminsky 2015-01-02 Kill all processes matching
+    /usr/bin/twindb at stop; Another try to work correctly with chained
+    processes
+  * 182: Aleksandr Kuzminsky 2015-01-02 Stop waiting for a process after
+    timeout
+  * 181: Aleksandr Kuzminsky 2015-01-02 one more desparate try to hanlde
+    processes correctly
+  * 180: Aleksandr Kuzminsky 2015-01-02 Use subprocess.wait() instead of
+    .communicate() because the latter causes 'Resource temporarily
+    unavailable'
+  * 179: Aleksandr Kuzminsky 2015-01-02 Fixed Bug #1406608
+  * 178: Aleksandr Kuzminsky 2015-01-02 syntax error fix
+  * 177: Aleksandr Kuzminsky 2015-01-02 implement
+    report_agent_privileges API call
+  * 176: Aleksandr Kuzminsky 2015-01-02 Kill agent if it failed to exit
+    after timeout
+  * 175: Aleksandr Kuzminsky 2015-01-02 Wait till twindb agent stops.
+    Should fix Bug #1406951
+  * 174: Aleksandr Kuzminsky 2015-01-01 set backup_type when agent add
+    new backup copy
+  * 173: Aleksandr Kuzminsky 2014-12-31 server version++
+  * 172: Aleksandr Kuzminsky 2014-12-31 Grant SUPER and CREATE
+    TABLESPACE for twindb_agent upon registration
+  * 171: Aleksandr Kuzminsky 2014-12-31 Added _priv fields to server.
+    Agents will report if they are granted these privileges
+  * 170: Aleksandr Kuzminsky 2014-12-31 better error detection when
+    taking a backup
+  * 169: Aleksandr Kuzminsky 2014-12-30 more correct job_id asignment
+  * 168: Aleksandr Kuzminsky 2014-12-30 hide MySQL password in log
+    messages
+  * 167: Aleksandr Kuzminsky 2014-12-30 Fix Bug #1406576 again :)
+  * 166: Aleksandr Kuzminsky 2014-12-30 small changes in rpm description
+  * 165: Aleksandr Kuzminsky 2014-12-30 Fixed Bug #1406576
+  * 164: Aleksandr Kuzminsky 2014-12-29 fixed yui warnings
+  * 163: Aleksandr Kuzminsky 2014-12-29 fixed typo in parameter list
+  * 162: Aleksandr Kuzminsky 2014-12-29 added switch user combo for
+    troubleshootting
+  * 161: Aleksandr Kuzminsky 2014-12-29 Fixed Bug #1403177
+  * 160: Aleksandr Kuzminsky 2014-12-29 version++
+  * 159: Aleksandr Kuzminsky 2014-12-28 maximizable log window
+  * 158: Aleksandr Kuzminsky 2014-12-28 client, server version++
+  * 157: Aleksandr Kuzminsky 2014-12-28 Fixed Bug #1406139
+  * 156: Aleksandr Kuzminsky 2014-12-28 added context menu on jobs grid
+    with items: 'show error log' and 'restart job'
+  * 155: Aleksandr Kuzminsky 2014-12-27 delay backup job to avid storms
+  * 154: Aleksandr Kuzminsky 2014-12-24 * Add dispatcher key during -
+    storage installation process to /var/twindb-
+    sftp/root/home/.ssh/authorized_keys . Thus we don't depend on system
+    sshd which often denies root logins.
+  * 153: Aleksandr Kuzminsky 2014-12-24 create ~apache/.ssh directory
+  * 152: Aleksandr Kuzminsky 2014-12-23 create volume for a new user
+    during registration
+  * 151: Aleksandr Kuzminsky 2014-12-23 add NameVirtualHost only for
+    apache vesions < 2.4 as in 2.4 it's deprecated
+  * 150: Aleksandr Kuzminsky 2014-12-23 Release++
+  * 149: Aleksandr Kuzminsky 2014-12-23 Added virtual host pre-staging
+    to deploy in development environment
+  * 148: Aleksandr Kuzminsky 2014-12-22 repo version++
+  * 147: Aleksandr Kuzminsky 2014-12-22 fixed bug in YUM version compare
+  * 146: Aleksandr Kuzminsky 2014-12-22 apache configs backported to 2.2
+    to support twindb server on centos6 and AMI
+  * 145: Aleksandr Kuzminsky 2014-12-22 Fixed typo in centos5 repo
+    settings
+  * 144: Aleksandr Kuzminsky 2014-12-22 Added SSL auth for twindb-
+    server* packages in public repo. Removed private production repo
+  * 143: Aleksandr Kuzminsky 2014-12-18 upload rpms directly to
+    repo.twindb.com
+  * 142: Aleksandr Kuzminsky 2014-12-18 Fixed bug #1400198
+  * 141: Aleksandr Kuzminsky 2014-12-17 rewrote %if conditions in a spec
+    file to make amz happy
+  * 140: Aleksandr Kuzminsky 2014-12-17 rebuild twindb agent to fix
+    shebang string on centos 6,7
+  * 139: Aleksandr Kuzminsky 2014-12-17 rpm target builds rpms and
+    uploads them to the straging repo
+  * 138: Aleksandr Kuzminsky 2014-12-16 build client rpms only
+  * 137: Aleksandr Kuzminsky 2014-12-16 added global makefile to build
+    the project
+  * 136: Aleksandr Kuzminsky 2014-12-16 removed experimental directory
+    used for old extjs tests
+  * 135: root 2014-12-14 * Try to connect with user/password if
+    connection with option files failed
+  * 134: root 2014-12-13 * Added MySQL Python connector spec file with
+    CentOS 5 support
+  * 133: root 2014-12-13 TwinDB public releases repo ported on CentOS 5
+  * 132: Aleksandr Kuzminsky 2014-12-14 version++
+  * 131: Aleksandr Kuzminsky 2014-12-14 Fixed Bug #1402270
+  * 130: Aleksandr Kuzminsky 2014-12-13 fixed GPG key url
+  * 129: Aleksandr Kuzminsky 2014-12-12 Client:
+  * 128: Aleksandr Kuzminsky 2014-12-12 schema changes
+  * 127: Aleksandr Kuzminsky 2014-12-10 Delete existing scheduled jobs
+  * 126: Aleksandr Kuzminsky 2014-12-10 Set storage params when
+    registering new storage. Fix existing records
+  * 125: Aleksandr Kuzminsky 2014-12-10 version ++
+  * 124: Aleksandr Kuzminsky 2014-12-10 volume_id ended up being NULL
+    for user_id 1 - fix it
+  * 123: Aleksandr Kuzminsky 2014-12-10 Detect MySQL socket to connect
+  * 122: Aleksandr Kuzminsky 2014-12-09 added chat window to console
+  * 121: Aleksandr Kuzminsky 2014-12-08 1) Registration code hint for
+    storage registration code 2) Google Analytics code in index page
+  * 120: Aleksandr Kuzminsky 2014-12-08 Show link to registration code
+    in agent's docs, startup script etc
+  * 119: Aleksandr Kuzminsky 2014-12-08 Show registration code on
+    ?reg_code request
+  * 118: Aleksandr Kuzminsky 2014-12-08 version ++
+  * 117: Aleksandr Kuzminsky 2014-12-08 Submit form on ENTER
+  * 116: Aleksandr Kuzminsky 2014-12-08 Fixed Bug #1398907
+  * 115: Aleksandr Kuzminsky 2014-12-08 Use dispatcher.twindb.com as
+    dispatcher server
+  * 114: Aleksandr Kuzminsky 2014-12-08 added new ssl certificates for
+    console.twindb.com and reflected them in config
+  * 113: Aleksandr Kuzminsky 2014-12-08 Upload rpm via nat
+  * 112: Aleksandr Kuzminsky 2014-12-08 Fixed Bug #1400426
+  * 111: Aleksandr Kuzminsky 2014-12-08 added production repo config and
+    version bump in for other packages
+  * 110: Aleksandr Kuzminsky 2014-12-03 Version ++
+  * 109: Aleksandr Kuzminsky 2014-12-03 Fixed Bug #1398910
+  * 108: Aleksandr Kuzminsky 2014-12-03 schedule incremental backups
+  * 107: Aleksandr Kuzminsky 2014-12-03 schema changes
+  * 106: Aleksandr Kuzminsky 2014-12-02 checkpoint
+  * 105: Aleksandr Kuzminsky 2014-11-30 a) Dashboard b) Jobs grid c)
+    Volume usage graph
+  * 104: Aleksandr Kuzminsky 2014-11-30 volume usage history table
+  * 103: Aleksandr Kuzminsky 2014-11-29 Version++
+  * 102: Aleksandr Kuzminsky 2014-11-29 [merge] Merge with trunk
+  * 101: Aleksandr Kuzminsky 2014-11-29 Welcome page in Home tab
+  * 100: Aleksandr Kuzminsky 2014-11-27 create meta user with user_id =
+    0
+  * 99: Aleksandr Kuzminsky 2014-11-27 fixed includes path
+  * 98: Aleksandr Kuzminsky 2014-11-27 fixed dispatcher script path
+  * 97: Aleksandr Kuzminsky 2014-11-27 version bump
+  * 96: Aleksandr Kuzminsky 2014-11-27 added config for staging
+    dispatcher
+  * 95: Aleksandr Kuzminsky 2014-11-27 Fixed Bug #1393033
+  * 94: Aleksandr Kuzminsky 2014-11-27 Fixed Bug #1393032
+  * 93: Aleksandr Kuzminsky 2014-11-26 versioning scheme change
+  * 92: Aleksandr Kuzminsky 2014-11-25 Schedule job only for 1-tier
+    slaves
+  * 91: Aleksandr Kuzminsky 2014-11-23 checkpoint
+  * 90: Aleksandr Kuzminsky 2014-11-22 Discover replication topology
+  * 89: Aleksandr Kuzminsky 2014-11-22 [merge] checkpoint
+  * 88: Aleksandr Kuzminsky 2014-11-22 checkpoint
+  * 87: Aleksandr Kuzminsky 2014-11-21 [merge] merged with trunk
+  * 86: Aleksandr Kuzminsky 2014-11-21 fixed in sql query
+  * 85: Aleksandr Kuzminsky 2014-11-21 implemented report_sss call
+  * 84: root 2014-11-21 agent sends SHOW SLAVE STATUS in report_sss call
+  * 83: root 2014-11-20 pass mysql slave status when register
+  * 82: Aleksandr Kuzminsky 2014-11-20 If server is already registered -
+    report that to an agent
+  * 81: root 2014-11-20 Accept existing twindb ssh keys
+  * 80: Aleksandr Kuzminsky 2014-11-20 client checkpoint
+  * 79: Aleksandr Kuzminsky 2014-11-20 checkpoint
+  * 78: Aleksandr Kuzminsky 2014-11-20 schema changes: added cluster
+    table and cluster_id in server table
+  * 77: Aleksandr Kuzminsky 2014-11-15 Release++
+  * 76: Aleksandr Kuzminsky 2014-11-15 Reject storage registration if ip
+    constraint fails
+  * 75: Aleksandr Kuzminsky 2014-11-15 add ip constraint
+  * 74: Aleksandr Kuzminsky 2014-11-13 client checkpoint
+  * 73: Aleksandr Kuzminsky 2014-11-14 added twindb-register-storage.py
+    to twindb-server-storage
+  * 72: Aleksandr Kuzminsky 2014-11-13 storage registration script
+  * 71: Aleksandr Kuzminsky 2014-11-13 [merge] re-merged trunk
+  * 70: Aleksandr Kuzminsky 2014-11-13 schema changes
+  * 69: Aleksandr Kuzminsky 2014-11-09 schema changes. job gets all
+    parameters from json in params field
+  * 68: Aleksandr Kuzminsky 2014-11-09 implemented get_config and
+    get_job. Tuned encryption/decryption of agent-dispatcher
+    communication
+  * 67: Aleksandr Kuzminsky 2014-11-04 client checkpoint
+  * 66: Aleksandr Kuzminsky 2014-11-04 register server
+  * 65: Aleksandr Kuzminsky 2014-11-07 register server, bugfixes in
+    server grid
+  * 64: Aleksandr Kuzminsky 2014-11-02 Set backup config in Servers grid
+  * 63: Aleksandr Kuzminsky 2014-11-02 store config in server table
+  * 62: Aleksandr Kuzminsky 2014-11-02 Add/remove backup config forms
+  * 61: Aleksandr Kuzminsky 2014-11-01 Attribute add/delete interfaces
+  * 60: Aleksandr Kuzminsky 2014-10-30 [merge] merges, conflicts
+  * 59: Aleksandr Kuzminsky 2014-10-30 Added BackupConfig form
+  * 58: Aleksandr Kuzminsky 2014-10-27 Set params for  newly created
+    schedules and retention policies
+  * 57: Aleksandr Kuzminsky 2014-10-27 [merge] merged db changes
+  * 56: Aleksandr Kuzminsky 2014-10-27 Reworked schedule
+  * 55: Aleksandr Kuzminsky 2014-10-26 pass instances id-s in params
+    object along with view
+  * 54: Aleksandr Kuzminsky 2014-10-25 reset children checked status too
+  * 53: Aleksandr Kuzminsky 2014-10-25 show attributes/values in servers
+    grid if selected
+  * 52: Aleksandr Kuzminsky 2014-10-25 checkpoint: work on server
+    attrinutes is in progress
+  * 51: Aleksandr Kuzminsky 2014-10-19 work with attributes: set, unset
+  * 50: Aleksandr Kuzminsky 2014-10-13 schema changes to support server
+    attributes
+  * 49: Aleksandr Kuzminsky 2014-10-05 updated monitoring configs
+  * 48: Aleksandr Kuzminsky 2014-10-05 Backup script for infrastructure
+    servers
+  * 47: Aleksandr Kuzminsky 2014-09-23 Signup form
+  * 46: Aleksandr Kuzminsky 2014-09-23 db sync
+  * 45: Aleksandr Kuzminsky 2014-09-21 added invitations table for beta
+    testing
+  * 44: Aleksandr Kuzminsky 2014-09-21 Fixed Bug #1372189
+  * 43: Aleksandr Kuzminsky 2014-09-21 db sync
+  * 42: Aleksandr Kuzminsky 2014-09-21 Release++
+  * 41: Aleksandr Kuzminsky 2014-09-21 [merge] db sync
+  * 40: Aleksandr Kuzminsky 2014-09-21 db sync
+  * 39: Aleksandr Kuzminsky 2014-09-21 Synced DB model(again)
+  * 38: Aleksandr Kuzminsky 2014-09-21 Synced DB model
+  * 37: Aleksandr Kuzminsky 2014-09-21 Reject write requests if demo
+    mode
+  * 36: Aleksandr Kuzminsky 2014-09-21 Signup window, login controls
+  * 35: Aleksandr Kuzminsky 2014-09-20 Don't show context menu on static
+    menu items
+  * 34: Aleksandr Kuzminsky 2014-09-16 Fixed Bug #1370319
+  * 33: Aleksandr Kuzminsky 2014-09-16 Fixed Bug #1369845
+  * 32: Aleksandr Kuzminsky 2014-09-16 Link to TwinDB new bug form
+  * 31: Aleksandr Kuzminsky 2014-09-15 Fixed Bug #1369380
+  * 30: Aleksandr Kuzminsky 2014-09-15 Fixed Bug #1369842
+  * 29: Aleksandr Kuzminsky 2014-09-15 Fixed Bug #1369383 and Bug
+    #1369377
+  * 28: Aleksandr Kuzminsky 2014-09-14 checkpoint
+  * 27: root 2014-09-13 1) Created server/contrib/, here we will put
+    software that we will build packages for and distribute them via
+    TwinDB repo. 2) Improved -db package
+  * 26: root 2014-09-10 monitoring improvements
+  * 25: root 2014-09-08 Added hosts app-03 and app-04
+  * 24: root 2014-09-07 checkpoint
+  * 23: root 2014-09-02 Copied twindb console from experimental
+  * 22: root 2014-09-01 Rebuilt web-console code, so you can build
+    production files
+  * 21: root 2014-08-31 removed orphan extjs library
+  * 20: root 2014-08-31 Fixed triling commans as they gave javascript
+    warnings
+  * 19: root 2014-08-27 Added form that shows Orders
+  * 18: root 2014-08-25 Added change password and save GPG key forms
+  * 17: root 2014-08-23 Addede views Generic, Security; Nice icons on
+    menu items
+  * 16: root 2014-08-18 checkpoint
+  * 15: root 2014-08-15 Added retention policy forms. First revision
+    with a comment that makes sense!
+  * 14: root 2014-08-14 checkpoint
+  * 13: root 2014-08-13 checkpoint
+  * 12: root 2014-08-13 checkpoint
+  * 11: root 2014-07-18 checkpoint
+  * 10: root 2014-07-11 checkpoint
+  * 9: root 2014-07-05 checkpoint
+  * 8: root 2014-07-04 checkpoint
+  * 7: Aleksandr Kuzminsky 2014-07-05 [merge] synced with the repo
+  * 6: Aleksandr Kuzminsky 2014-07-05 added jmeter test
+  * 5: Aleksandr Kuzminsky 2014-06-01 Added agent code
+  * 4: Aleksandr Kuzminsky 2014-06-01 Added Workbench backup file
+  * 3: Aleksandr Kuzminsky 2014-06-01 Added TwinDB database model
+  * 2: root 2014-05-30 Added ExtJS archive
+  * Updated changelog for version 0.4.1-1
+  * New version 0.4.2-1
+  * 260: Aleksandr Kuzminsky 2015-04-29 * Fixed load timezone command in
+    db/twindb-db_upgrade.sh
+  * 259: Aleksandr Kuzminsky 2015-04-29 [merge] * Building packages for
+    Debian
+  * Updated changelog for version 0.4.2-1
+
+ -- TwinDB Packager (TwinDB packager key) <packager@twindb.com>  Thu, 30 Apr 2015 04:24:08 +0000

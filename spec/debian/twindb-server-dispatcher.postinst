@@ -1,0 +1,19 @@
+chown www-data:root /etc/twindb/gnupg
+chmod 700 /etc/twindb/gnupg
+
+chown www-data:root /usr/share/twindb/gpg/twindb-dispatcher-gpg.key
+chmod 600 /usr/share/twindb/gpg/twindb-dispatcher-gpg.key
+
+chown www-data:root /usr/share/twindb/ssh/twindb-dispatcher-ssh.key
+chmod 600 /usr/share/twindb/ssh/twindb-dispatcher-ssh.key
+
+a2ensite twindb-dispatcher
+service apache2 graceful
+
+sudo -u www-data gpg --homedir /etc/twindb/gnupg --import /usr/share/twindb/gpg/twindb-dispatcher-gpg.key
+
+echo "================================================================================================================="
+echo ""
+echo "Edit /etc/twindb/config.php to set MySQL credentials"
+echo ""
+echo "================================================================================================================="

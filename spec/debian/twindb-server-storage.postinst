@@ -1,0 +1,20 @@
+chown root:root /etc/twindb/sshd_config
+chown root:root /etc/twindb/sshd_config_5
+
+chmod 600 /etc/twindb/sshd_config
+chmod 600 /etc/twindb/sshd_config_5
+
+update-rc.d twindb-server-storage defaults
+
+# Install dispatcher key
+mkdir -p /var/twindb-sftp/root/home/.ssh/
+cp /usr/share/twindb/ssh/twindb-dispatcher-ssh.key.pub /var/twindb-sftp/root/home/.ssh/authorized_keys
+chmod 700 /var/twindb-sftp/root/home/.ssh/
+chmod 600 /var/twindb-sftp/root/home/.ssh/authorized_keys
+
+if test -z "`grep ^twindb: /etc/group`"
+then
+    groupadd twindb
+fi
+
+service twindb-server-storage restart

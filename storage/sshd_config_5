@@ -1,0 +1,22 @@
+#
+Port 4194
+PermitRootLogin yes
+MaxSessions 3
+
+AuthorizedKeysCommand /usr/bin/twindb-storage-auth
+AuthorizedKeysCommandRunAs root
+
+PidFile /var/run/twindb-storage.pid
+PasswordAuthentication no
+GSSAPIAuthentication no
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+AllowUsers root user_id_*
+ClientAliveInterval 30
+
+# Subsystem sftp internal-sftp
+
+Match Group twindb
+    ChrootDirectory /var/twindb-sftp/%u
+

@@ -1,0 +1,11 @@
+etc/twindb/httpd/conf.d/twindb-dispatcher.conf etc/apache2/sites-available
+etc/twindb/gnupg etc/twindb
+
+usr/share/twindb/dispatcher usr/share/twindb
+usr/share/twindb/gpg/twindb-dispatcher-gpg.key usr/share/twindb/gpg
+usr/share/twindb/ssh/twindb-dispatcher-ssh.key usr/share/twindb/ssh
+
+usr/bin/twindb-apply_retention_policy usr/bin
+usr/bin/twindb-schedule usr/bin
+usr/bin/twindb-volume_usage_snapshot usr/bin
+

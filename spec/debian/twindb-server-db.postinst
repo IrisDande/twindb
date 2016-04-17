@@ -1,0 +1,11 @@
+# The file may contain sensible data
+chmod 600 /usr/share/twindb/db/twindb-data.sql
+
+# Enable mysql service
+update-rc.d mysql defaults
+
+echo "================================================================================================================="
+echo ""
+echo "Run twindb-db_upgrade script to install or upgrade MySQL schema"
+echo ""
+echo "================================================================================================================="

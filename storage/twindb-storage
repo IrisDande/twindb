@@ -1,0 +1,80 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: twindb-storage
+# Required-Start: $local_fs $syslog $network $time
+# Required-Stop: $local_fs $syslog $network $time
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: TwinDB storage server
+### END INIT INFO
+
+project_short_name="twindb"
+project_long_name="TwinDB"
+action=$1
+pid_file=/var/run/$project_short_name-storage.pid
+config=/etc/$project_short_name/sshd_config
+config_5=/etc/$project_short_name/sshd_config_5
+CHROOT_DIR=/var/twindb-sftp
+
+if test -z "$action"
+then
+	echo "Usage:"
+	echo "$0 start|stop|restart|status"
+	exit 1
+fi
+
+case "$action" in 
+	'start')
+		SSHD=`which sshd`
+		if test -x "$SSHD"
+		then
+            for username in `cd $CHROOT_DIR && ls | grep -v root`
+            do
+                d="$CHROOT_DIR/$username/dev/pts"
+                if test -z "`grep $d /etc/mtab`"
+                then
+                    mount -t devpts devpts  "$d"
+                fi
+            done
+            # Detect config version
+            if ! "$SSHD" -f $config 2> /dev/null
+            then
+                config=$config_5
+            fi
+			"$SSHD" -f $config 
+		else
+			echo "sshd isn't found or execution permission isn't granted"
+			exit 1
+		fi
+	;;
+	'stop')
+	if test -f $pid_file
+	then
+        for username in `cd $CHROOT_DIR && ls`
+        do
+            d="$CHROOT_DIR/$username/dev/pts"
+            if ! test -z "`grep $d /etc/mtab`"
+            then
+                umount "$d"
+            fi
+        done
+		kill `cat $pid_file`
+	fi
+	;;
+	'restart')
+	$0 stop
+	$0 start
+	;;
+	'force-reload')
+    	$0 restart
+    	;;
+	'status')
+	if test -f $pid_file && ! test -z "$(ps -p `cat $pid_file` -o pid=)"
+	then
+		echo "$project_long_name storage is running"
+	else
+		echo "$project_long_name storage is not running"
+	fi
+	;;
+esac

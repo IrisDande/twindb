@@ -1,0 +1,9 @@
+/var/log/twindb/*log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /sbin/service httpd graceful > /dev/null 2>/dev/null || true
+    endscript
+}

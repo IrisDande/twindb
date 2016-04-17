@@ -1,0 +1,6 @@
+etc/twindb/config.php etc/twindb
+
+usr/share/twindb/inc/dispatcher_lib.php usr/share/twindb/inc
+usr/share/twindb/inc/mysql_lib.php usr/share/twindb/inc
+usr/share/twindb/inc/general_lib.php usr/share/twindb/inc
+usr/share/twindb/inc/variables.php usr/share/twindb/inc

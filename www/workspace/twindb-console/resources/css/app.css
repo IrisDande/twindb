@@ -1,0 +1,260 @@
+.x-mask.splashscreen {
+    background-color: white;
+    opacity: 1;
+}
+.x-mask-msg.splashscreen,
+.x-mask-msg.splashscreen div {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 30px 5px 5px 5px;
+    border: none;
+    background-color: transparent;
+    background-position: top center;
+}
+.x-message-box .x-window-body .x-box-inner {
+    min-height: 110px !important;
+}
+.x-splash-icon {
+    background-image: url('../images/twindb-logo.png') !important;
+    margin-top: -160px;
+    margin-bottom: 15px;
+    height: 100px;
+    background-repeat: no-repeat;
+}
+.monospace-text {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+}
+.v-header {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: left;
+    -webkit-transform: rotate(-90deg);     
+    -moz-transform: rotate(-90deg);     
+    -o-transform: rotate(-90deg);    
+    -ms-transform: rotate(-90deg); /* IE  */  
+}
+.x-grid-group-title {
+    background-color: #ddd;
+}
+.ux-filtered-column {
+    font-style: italic;
+    font-weight: bold;
+}
+.ux-gridfilter-text-icon {
+    background-image: url(../icons/find.png) !important;
+}
+.acknowledged .x-grid-cell {
+    background-color: #E0E0E0 !important;
+}
+.non_acknowledged .x-grid-cell {
+    background-color: #FFB0C4 !important;
+}
+.accept {
+    background-image:url('../icons/accept.png') !important;
+}
+.add {
+    background-image:url('../icons/add.png') !important;
+}
+.application_double {
+    background-image:url('../icons/application_double.png') !important;
+}
+.bell {
+    background-image:url('../icons/bell.png') !important;
+}
+.book_addresses {
+    background-image:url('../icons/book_addresses.png') !important;
+}
+.brick {
+    background-image:url('../icons/brick.png') !important;
+}
+.bullet_black {
+    background-image:url('../icons/bullet_black.png') !important;
+    background-repeat: no-repeat;
+}
+.bullet_error {
+    background-image:url('../icons/bullet_error.png') !important;
+    background-repeat: no-repeat;
+}
+.bullet_go {
+    background-image:url('../icons/bullet_go.png') !important;
+}
+.bullet_green {
+    background-image:url('../icons/bullet_green.png') !important;
+    background-repeat: no-repeat;
+}
+.calendar {
+    background-image:url('../icons/calendar.png') !important;
+}
+.calendar_add {
+    background-image:url('../icons/calendar_add.png') !important;
+}
+.calendar_view_day {
+    background-image:url('../icons/calendar_view_day.png') !important;
+}
+.cancel {
+    background-image:url('../icons/cancel.png') !important;
+}
+.chart_curve {
+    background-image:url('../icons/chart_curve.png') !important;
+}
+.chart_organisation {
+    background-image:url('../icons/chart_organisation.png') !important;
+}
+.coins {
+    background-image:url('../icons/coins.png') !important;
+}
+.cog {
+    background-image:url('../icons/cog.png') !important;
+}
+.cog_add {
+    background-image:url('../icons/cog_add.png') !important;
+}
+.control_repeat {
+    background-image:url('../icons/control_repeat.png') !important;
+}
+.database_delete {
+    background-image:url('../icons/database_delete.png') !important;
+}
+.database_refresh {
+    background-image:url('../icons/database_refresh.png') !important;
+}
+.database_save {
+    background-image:url('../icons/database_save.png') !important;
+}
+.database_gear {
+    background-image:url('../icons/database_gear.png') !important;
+}
+.datacenter {
+    background-image:url('../icons/datacenter.png') !important;
+}
+.debian {
+    background-image:url('../icons/debian.png') !important;
+}
+.delete {
+    background-image:url('../icons/delete.png') !important;
+}
+.disk {
+    background-image:url('../icons/disk.png') !important;
+}
+.disk_add {
+    background-image:url('../icons/disk_add.png') !important;
+}
+.disk_multiple {
+    background-image:url('../icons/disk_multiple.png') !important;
+}
+.drive {
+    background-image:url('../icons/drive.png') !important;
+}
+.drive_add {
+    background-image:url('../icons/drive_add.png') !important;
+}
+.door_in {
+    background-image:url('../icons/door_in.png') !important;
+}
+.door_out {
+    background-image:url('../icons/door_out.png') !important;
+}
+.film {
+    background-image:url('../icons/film.png') !important;
+}
+.find {
+    background-image:url('../icons/find.png') !important;
+    background-repeat: no-repeat;
+}
+.help {
+    background:url('../icons/help.png') no-repeat center left;
+    padding:2px;
+    padding-left:20px;
+    font-weight:700;
+}
+.home {
+    background-image:url('../icons/house.png') !important;
+}
+.key {
+    background-image:url('../icons/key.png') !important;
+}
+.key-go {
+    background-image:url('../icons/key_go.png') !important;
+}
+.logout {
+    background-image:url('../icons/logout_icon.png') !important;
+}
+.map {
+    background-image:url('../icons/map.png') !important;
+}
+.NetworkDriveOnline {
+    background-image:url('../icons/Network-Drive-Online-icon.png') !important;
+}
+.page_white_add {
+    background-image:url('../icons/page_white_add.png') !important;
+}
+.page_white_stack {
+    background-image:url('../icons/page_white_stack.png') !important;
+}
+.redhat {
+    background-image:url('../icons/redhat.png') !important;
+}
+.report {
+    background-image:url('../icons/report.png') !important;
+}
+.resultset_next {
+    background-image:url('../icons/resultset_next.png') !important;
+}
+.resultset_previous {
+    background-image:url('../icons/resultset_previous.png') !important;
+}
+.server_database {
+    background-image:url('../icons/server_database.png') !important;
+}
+.sitemap {
+    background-image:url('../icons/sitemap.png') !important;
+}
+.shield {
+    background-image:url('../icons/shield.png') !important;
+}
+.tag_blue {
+    background-image:url('../icons/tag_blue.png') !important;
+}
+.tag_blue_add {
+    background-image:url('../icons/tag_blue_add.png') !important;
+}
+.user_add {
+    background-image:url('../icons/user_add.png') !important;
+}
+.user_suit {
+    background-image:url('../icons/user_suit.png') !important;
+}
+.capslock{
+    background:url('../icons/bullet_error.png') no-repeat center left;
+    padding:2px;
+    padding-left:20px;
+    font-weight:700;
+}
+
+.pt_BR {
+    background-image:url('../flags/br.png') !important;
+    background-repeat: no-repeat;
+}
+.en {
+    background-image:url('../flags/us.png') !important;
+    background-repeat: no-repeat;
+}
+.ukr {
+    background-image:url('../flags/ua.png') !important;
+    background-repeat: no-repeat;
+}
+.zh_CN {
+    background-image:url('../flags/cn.png') !important;
+    background-repeat: no-repeat;
+}
+
+.x-grid-checkcolumn {
+    width: 13px;
+    height: 13px;
+    background: url('../images/checkbox.gif') no-repeat scroll 0px 0px transparent;
+}
+
+.x-grid-checkcolumn-checked {
+    background-position: 0px -13px;
+}

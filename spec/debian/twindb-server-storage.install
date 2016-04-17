@@ -1,0 +1,8 @@
+etc/twindb/sshd_config etc/twindb
+etc/twindb/sshd_config_5 etc/twindb
+
+usr/bin/twindb-add_chroot_user usr/bin
+usr/bin/twindb-register-storage usr/bin
+usr/bin/twindb-storage-auth usr/bin
+usr/share/twindb/ssh/twindb-dispatcher-ssh.key.pub usr/share/twindb/ssh
+
