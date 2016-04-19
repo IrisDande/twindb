@@ -18,6 +18,7 @@ Vagrant.configure(2) do |config|
     app.vm.hostname = "app"
     app.vm.provision :shell, path: "bootstrap.sh"
     app.vm.network "private_network", ip: "192.168.50.100"
+    app.vm.network "public_network",:bridge => 'em1',:use_dhcp_assigned_default_route => true
     app.vm.synced_folder "../", "/home/vagrant/src/twindb"
   end
   config.vm.define "db01" do |db01|
