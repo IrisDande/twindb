@@ -127,7 +127,7 @@ checksencha:
 		wget -O /tmp/${SENCHA_CMD_ARCHIVE} ${SENCHA_CMD_URL} && \
 		cd /tmp ;\
 		unzip -o ${SENCHA_CMD_ARCHIVE} | grep inflating | awk '{ print $2}'; \
-        	chmod a+x /tmp/${SENCHA_CMD_UNZIP} | ln -s /root/bin/Sencha/Cmd/5.1.3.61/sencha /usr/bin; \
+        	chmod a+x /tmp/${SENCHA_CMD_UNZIP} | ln -s /root/bin/Sencha/Cmd/5.1.3.61/* /usr/bin; \
 		./${SENCHA_CMD_UNZIP} ;\
 	else \
 		echo "The package sencha is installed"; \
