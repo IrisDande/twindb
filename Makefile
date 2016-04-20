@@ -134,7 +134,7 @@ checksencha:
 	fi
 
 checkpackages:
-	@for p in java-1.7.0-openjdk ruby rubygems; do \
+	@for p in java-1.7.0-openjdk ruby rubygems httpd; do \
 		if test -z "`rpm -q $$p | grep -v 'is not installed'`"; then \
 			echo -e "Error: $$p is not found. Please install package $$p:\nyum install $$p"; \
 			yum install -y $$p \
