@@ -9,7 +9,7 @@ deb_packages = build-essential devscripts debhelper
 
 SENCHA_CMD_URL=https://cdn.sencha.com/cmd/5.1.3.61/SenchaCmd-5.1.3.61-linux-x64.run.zip
 SENCHA_CMD_ARCHIVE=SenchaCmd-5.1.3.61-linux-x64.run.zip
-
+SENCHA_CMD_UNZIP=SenchaCmd-5.1.3.61-linux-x64.run
 
 .PHONY: help rpm sign rpmmacros monitoring-rpm staging-repo spec
 
@@ -116,13 +116,21 @@ checktools: checkpackages checksencha checkrpmbuild
 checkrpmbuild:
 	@if test -z "`which rpmbuild`"; then \
 		echo -e "Error: rpmbuild is not found. Please install package rpm-build:\nyum install rpm-build"; \
-		exit -1; \
+		yum install -y rpm-build ;\
+	else \
+		echo -e "The package rpmbuild is installed"; \
 	fi
 
 checksencha:
 	@if test -z "`which sencha`"; then \
 		echo -e "Error: sencha is not found. Go to http://sencha.com and install Sencha Cmd"; \
-		exit -1; \
+#		wget -O /tmp/${SENCHA_CMD_ARCHIVE} ${SENCHA_CMD_URL} && \
+		cd /tmp ;\
+		unzip -o ${SENCHA_CMD_ARCHIVE} | grep inflating | awk '{ print $2}'; \
+        	chmod a+x /tmp/${SENCHA_CMD_UNZIP} | ln -s /root/bin/Sencha/Cmd/5.1.3.61/sencha /usr/bin; \
+		./${SENCHA_CMD_UNZIP} ;\
+	else \
+		echo "The package sencha is installed"; \
 	fi
 
 checkpackages:
