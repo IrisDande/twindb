@@ -7,6 +7,9 @@ pwd := $(shell pwd)
 top_dir = ${pwd}/${build_dir}/rpmbuild
 deb_packages = build-essential devscripts debhelper
 
+SENCHA_CMD_URL=https://cdn.sencha.com/cmd/5.1.3.61/SenchaCmd-5.1.3.61-linux-x64.run.zip
+SENCHA_CMD_ARCHIVE=SenchaCmd-5.1.3.61-linux-x64.run.zip
+SENCHA_CMD_UNZIP=SenchaCmd-5.1.3.61-linux-x64.run
 
 .PHONY: help rpm sign rpmmacros monitoring-rpm staging-repo spec
 
@@ -104,25 +107,36 @@ rpm: spec rpmmacros checktools
 	tar zvcf "${top_dir}/SOURCES/${src_dir}.tar.gz" -C "${build_dir}" "${src_dir}"
 	rpmbuild --macros=${rpmmacros} --define '_topdir ${top_dir}' -ba spec/twindb-server.spec
 
-checktools: checksencha checkrpmbuild checkpackages
+checktools: checkpackages checksencha checkrpmbuild
 
 checkrpmbuild:
 	@if test -z "`which rpmbuild`"; then \
 		echo -e "Error: rpmbuild is not found. Please install package rpm-build:\nyum install rpm-build"; \
-		exit -1; \
+		yum install -y rpm-build ;\
+	else \
+		echo -e "The package rpmbuild is installed"; \
 	fi
 
 checksencha:
 	@if test -z "`which sencha`"; then \
 		echo -e "Error: sencha is not found. Go to http://sencha.com and install Sencha Cmd"; \
-		exit -1; \
+		wget -O /tmp/${SENCHA_CMD_ARCHIVE} ${SENCHA_CMD_URL} && \
+		cd /tmp ;\
+		unzip -o ${SENCHA_CMD_ARCHIVE} | grep inflating | awk '{ print $2}'; \
+        	chmod a+x /tmp/${SENCHA_CMD_UNZIP} | ln -s /root/bin/Sencha/Cmd/5.1.3.61/* /usr/bin; \
+		./${SENCHA_CMD_UNZIP} ;\
+	else \
+		echo "The package sencha is installed"; \
 	fi
 
 checkpackages:
-	@for p in java-1.7.0-openjdk ruby rubygems; do \
+	@for p in java-1.7.0-openjdk ruby rubygems httpd; do \
 		if test -z "`rpm -q $$p | grep -v 'is not installed'`"; then \
 			echo -e "Error: $$p is not found. Please install package $$p:\nyum install $$p"; \
-			exit -1; \
+			yum install -y $$p \
+#			exit -1; \
+		else \
+			echo -e "The package $$p is installed"; \
 		fi; \
 	done
 
