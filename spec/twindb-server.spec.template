@@ -79,8 +79,6 @@ rm -rf %{buildroot}
 %{_datadir}/twindb/inc/general_lib.php
 %{_datadir}/twindb/inc/mysql_lib.php
 %{_datadir}/twindb/inc/variables.php
-%attr(600, apache, -) %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key
-%attr(644, apache, -) %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
 %{_sysconfdir}/logrotate.d/twindb
 
 %files dispatcher
@@ -89,7 +87,6 @@ rm -rf %{buildroot}
 %config(noreplace) %attr(700, apache, -) %{_sysconfdir}/twindb/gnupg
 %{_sysconfdir}/cron.d/twindb-dispatcher.cron
 %{_datadir}/twindb/dispatcher
-%attr(600, apache, -) %{_datadir}/twindb/gpg/twindb-dispatcher-gpg.key
 %attr(755, root, root) %{_bindir}/twindb-apply_retention_policy
 %attr(755, root, root) %{_bindir}/twindb-schedule
 %attr(755, root, root) %{_bindir}/twindb-volume_usage_snapshot
@@ -97,9 +94,9 @@ rm -rf %{buildroot}
 %files console
 %defattr(644, root, root, 755>)
 %config(noreplace)  %{_sysconfdir}/httpd/conf.d/twindb-console.conf
-%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/ca-bundle-client.crt
-%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/twindb_com.crt
-%attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.key/twindb_com.key
+# %attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/ca-bundle-client.crt
+# %attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.crt/twindb_com.crt
+# %attr(400, root, -) %{_sysconfdir}/twindb/httpd/conf/ssl.key/twindb_com.key
 %{_datadir}/twindb/console
 
 %files db
@@ -111,7 +108,6 @@ rm -rf %{buildroot}
 
 %files storage
 %defattr(644, root, root, 755>)
-%{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
 %attr(755, root, root)%{_sysconfdir}/init.d/twindb-storage
 %attr(755, root, root)%{_bindir}/twindb-add_chroot_user
 %attr(755, root, root)%{_bindir}/twindb-register-storage
@@ -122,11 +118,26 @@ rm -rf %{buildroot}
 %post common
 if [ "$1" = "1" ]
 then
+
     echo "========================================"
     echo ""
     echo "Edit %{_sysconfdir}/twindb/config.php to set MySQL credentials"
     echo ""
     echo "========================================"
+fi
+
+if ! test -f %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key
+then
+    mkdir -p %{_datadir}/twindb/ssh/
+    echo "Generating SSH key"
+
+    ssh-keygen -f %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key -P ""
+
+    chown apache %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key
+    chmod 600 %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key
+
+    chown apache %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
+    chmod 644 %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub
 fi
 
 /sbin/chkconfig ntpd on
@@ -154,18 +165,33 @@ chkconfig httpd on
 apachectl graceful
 
 %post dispatcher
+
+service haveged start
+
+chown -R apache:apache %{_sysconfdir}/twindb/gnupg
+
 if [ "$1" = "1" ]
 then
-    gpg --homedir %{_sysconfdir}/twindb/gnupg --import \
-        < %{_datadir}/twindb/gpg/twindb-dispatcher-gpg.key
+    echo "%%echo Generating a standard key
+Key-Type: RSA
+Key-Length: 2048
+Subkey-Type: RSA
+Subkey-Length: 2048
+Name-Real: TwinDB Dispatcher
+Name-Comment: No passphrase
+Name-Email: api@twindb.com
+Expire-Date: 0
+%%commit
+%%echo done
+" | gpg --homedir %{_sysconfdir}/twindb/gnupg --batch --gen-key
 fi
+
 # Generate SSH key for root if missing
 if ! test -f /root/.ssh/id_rsa
 then
     echo "Warning: root user doesn't have an SSH key, generating one."
     ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa
 fi
-chown -R apache:apache %{_sysconfdir}/twindb/gnupg
 apache_homedir=`grep ^apache: /etc/passwd | awk -F: '{ print $6 }'`
 mkdir -p "$apache_homedir/.ssh"
 chown -R apache:apache "$apache_homedir/.ssh"
@@ -189,7 +215,6 @@ echo "========================================"
 
 # Install dispatcher key
 mkdir -p /var/twindb-sftp/root/home/.ssh/
-cp %{_datadir}/twindb/ssh/twindb-dispatcher-ssh.key.pub /var/twindb-sftp/root/home/.ssh/authorized_keys
 chmod 700 /var/twindb-sftp/root/home/.ssh/
 chmod 600 /var/twindb-sftp/root/home/.ssh/authorized_keys
 

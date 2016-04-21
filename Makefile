@@ -53,8 +53,6 @@ install: installdirs
 	install -m 644 common/general_lib.php                           	${DESTDIR}/usr/share/twindb/inc
 	install -m 644 common/mysql_lib.php                             	${DESTDIR}/usr/share/twindb/inc
 	install -m 644 common/variables.php                             	${DESTDIR}/usr/share/twindb/inc
-	install -m 600 support/keys/twindb-dispatcher-ssh.key           	${DESTDIR}/usr/share/twindb/ssh
-	install -m 600 support/keys/twindb-dispatcher-ssh.key.pub       	${DESTDIR}/usr/share/twindb/ssh
 	install -m 644 support/logrotate/twindb                         	${DESTDIR}/etc/logrotate.d
 	#
 	# Installing files for package -dispatcher
@@ -62,7 +60,6 @@ install: installdirs
 	install -m 644 support/cron/twindb-dispatcher.cron                      ${DESTDIR}/etc/cron.d
 	install -m 644 support/http/twindb-dispatcher.conf                      ${DESTDIR}/etc/twindb/httpd/conf.d
 	install -m 644 dispatcher/api.php                                       ${DESTDIR}/usr/share/twindb/dispatcher
-	install -m 600 support/keys/twindb-dispatcher-gpg.key                   ${DESTDIR}/usr/share/twindb/gpg
 	install -m 755 dispatcher/tasks/twindb-apply_retention_policy.php       ${DESTDIR}/usr/bin/twindb-apply_retention_policy
 	install -m 755 dispatcher/tasks/twindb-schedule.php                     ${DESTDIR}/usr/bin/twindb-schedule
 	install -m 755 dispatcher/tasks/twindb-volume_usage_snapshot.php        ${DESTDIR}/usr/bin/twindb-volume_usage_snapshot
@@ -70,9 +67,9 @@ install: installdirs
 	# Installing files for package -www
 	#
 	install -m 644 support/http/twindb-console.conf                             ${DESTDIR}/etc/twindb/httpd/conf.d
-	install -m 400 support/http/ssl.crt/ca-bundle-client.crt                    ${DESTDIR}/etc/twindb/httpd/conf/ssl.crt
-	install -m 400 support/http/ssl.crt/twindb_com.crt                          ${DESTDIR}/etc/twindb/httpd/conf/ssl.crt
-	install -m 400 support/http/ssl.key/twindb_com.key                          ${DESTDIR}/etc/twindb/httpd/conf/ssl.key
+	# install -m 400 support/http/ssl.crt/ca-bundle-client.crt                    ${DESTDIR}/etc/twindb/httpd/conf/ssl.crt
+	# install -m 400 support/http/ssl.crt/twindb_com.crt                          ${DESTDIR}/etc/twindb/httpd/conf/ssl.crt
+	# install -m 400 support/http/ssl.key/twindb_com.key                          ${DESTDIR}/etc/twindb/httpd/conf/ssl.key
 	cp -R www/workspace/build/production/TwinDB/*                               ${DESTDIR}/usr/share/twindb/console
 	install -m 644 www/workspace/twindb-console/resources/icons/favicon.ico     ${DESTDIR}/usr/share/twindb/console
 	#
@@ -91,7 +88,6 @@ install: installdirs
 	install -m 600 storage/sshd_config                          ${DESTDIR}/etc/twindb
 	install -m 600 storage/sshd_config_5                        ${DESTDIR}/etc/twindb
 	install -m 755 storage/twindb-storage                       ${DESTDIR}/etc/init.d/
-	install -m 644 support/keys/twindb-dispatcher-ssh.key.pub   ${DESTDIR}/usr/share/twindb/ssh
 	install -m 755 storage/twindb-add_chroot_user.sh            ${DESTDIR}/usr/bin/twindb-add_chroot_user
 	install -m 755 storage/twindb-register-storage.py           ${DESTDIR}/usr/bin/twindb-register-storage
 	install -m 755 storage/twindb-storage-auth.sh               ${DESTDIR}/usr/bin/twindb-storage-auth
